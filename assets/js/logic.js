@@ -12,7 +12,8 @@ var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("start");
 var initialsEl = document.getElementById("initials");
 var feedbackEl = document.getElementById("feedback");
-var questionTitle = document.getElementById("question-title")
+var questionTitle = document.getElementById("question-title");
+var finalScoreEl = document.getElementById("final-score");
 
 // sound effects
 var sfxRight = new Audio("assets/sfx/correct.wav");
@@ -56,7 +57,7 @@ function getQuestion() {
     // display on the page
     choicesEl.append(answerButton);
 
-    // // attach click event listener to each choice
+    // attach click event listener to each choice
     answerButton.addEventListener("click", function (e) {
       var input = e.target.textContent
       console.log(input)
@@ -67,7 +68,7 @@ function getQuestion() {
         time = time - 10
       }
       currentQuestionIndex++
-      if(currentQuestionIndex === questions.length-1)
+      if(currentQuestionIndex === questions.length)
       {
         // got to results
         document.getElementById("questions").style.display = "none";
@@ -76,7 +77,7 @@ function getQuestion() {
         clearInterval(myInterval);
       }
         else{
-       getQuestion()
+        getQuestion()
       }
     })
   }
@@ -89,12 +90,12 @@ function questionClick(event) {
 
     if (time < 0) {
       time = 0;
+      // display new time on page
+      timerEl.textContent = time;
+  
+      // play "wrong" sound effect
+      sfxWrong.play();
     }
-    // display new time on page
-    timerEl.textContent = time;
-
-    // play "wrong" sound effect
-    sfxWrong.play();
 
     feedbackEl.textContent = "Wrong!";
   } else {
@@ -119,9 +120,7 @@ function questionClick(event) {
   } else {
     getQuestion();
   }
-  // quizEnd
-  // else
-  // getQuestion
+  
 }
 
 function quizEnd() {
@@ -131,16 +130,21 @@ function quizEnd() {
   // show end screen
   // document.getElementById("start-screen").style.display = "none";
   var endScreenEl = document.getElementById("end-screen").style.display = "block";
-  // endScreenEl.removeAttribute("class");
+
+  endScreenEl.removeAttribute("class");
 
   // show final score
-  var finalScoreEl = document.getElementById("end-screen");
+  
   finalScoreEl.textContent = time;
+  finalScoreEl.appendChild(time);
+
+
 
   // hide questions section
   questionsEl.setAttribute("class", "hide");
 
-  // show a form the get the initialss and save the initial + score in the localstoraget
+  // show a form the get the initials and save the initial + score in the localstoraget
+  console.log(finalScoreEl)
 
 }
 function clockTick() {
